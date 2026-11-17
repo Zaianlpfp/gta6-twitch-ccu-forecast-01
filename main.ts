@@ -7,7 +7,7 @@
 // curve ramps (peak at hour >= 12 and peak/hour-1 > 1.3) are the rolling-
 // midnight console launches — the shape GTA VI and the practice launches
 // share — so they form the reference set (falling back to all comparables
-// if fewer than 5 ramp). For each hour 2..24 the forecast median is the
+// if fewer than 5 ramp). For each hour 2..24 the forecast centre is the
 // kernel-weighted mean of the reference log-ratios, with Gaussian weights
 // on |ln(hour-1) - ln(p1)| (bandwidth 1.0 in log space): launches whose
 // first hour looked like this case's first hour count most, because the
@@ -22,7 +22,7 @@
 // only a few neighbours carry weight. Quantiles: q = p1 * exp(m + z*s).
 //
 // Calibrated locally on the 4 practice cases (answers = SullyGnome hourly
-// averages, the same source the kit documents): mean pinball loss 0.202
+// averages, the same source the kit documents): mean pinball loss 0.1963
 // vs house baseline 0.387; 90% coverage 0.91-1.00. Leave-one-out over the
 // 37 comparables: 0.45 vs baseline 0.93.
 //

@@ -31,7 +31,7 @@ past launch in the case file, the program extracts its release-day hourly
 curve and its log-ratio curve ln(v_h / v_1). Launches whose curve ramps
 (peak at hour ≥ 12 and peak/hour-1 > 1.3) — the rolling-midnight console
 shape GTA VI shares — form the reference set. For each hour the forecast
-median is the kernel-weighted mean of the reference log-ratios, with
+centre is the kernel-weighted mean of the reference log-ratios, with
 Gaussian weights on |ln(hour-1) − ln(p1)| (bandwidth 1.0): launches whose
 first hour looked like this case's first hour count most, because the ramp
 factor depends strongly on how big hour 1 already is. The spread is the
@@ -47,13 +47,13 @@ source the kit documents):
 
 | case | this entry | house baseline |
 |---|---|---|
-| p00 Wolverine | 0.335 | 0.744 |
-| p01 RDR2 | 0.164 | 0.287 |
-| p02 God of War Ragnarök | 0.135 | 0.215 |
-| p03 Spider-Man 2 | 0.174 | 0.303 |
-| **overall** | **0.202** | **0.387** |
+| p00 Wolverine | 0.3220 | 0.744 |
+| p01 RDR2 | 0.1566 | 0.287 |
+| p02 God of War Ragnarök | 0.1300 | 0.215 |
+| p03 Spider-Man 2 | 0.1764 | 0.303 |
+| **overall** | **0.1963** | **0.387** |
 
-90% coverage 0.91–1.00. Two runs produce byte-identical output; all four
+90% coverage 0.87–1.00. Two runs produce byte-identical output; all four
 cases run in ~0.35 s total (limit 8 s per case).
 
 ---
