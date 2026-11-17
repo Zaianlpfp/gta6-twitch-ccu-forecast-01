@@ -23,7 +23,7 @@
 //
 // Calibrated locally on the 4 practice cases (answers = SullyGnome hourly
 // averages, the same source the kit documents): mean pinball loss 0.1963
-// vs house baseline 0.387; 90% coverage 0.91-1.00. Leave-one-out over the
+// vs house baseline 0.387; 90% coverage 0.87-1.00. Leave-one-out over the
 // 37 comparables: 0.45 vs baseline 0.93.
 //
 // Node 22, stdlib only, no network, deterministic (same input bytes give
