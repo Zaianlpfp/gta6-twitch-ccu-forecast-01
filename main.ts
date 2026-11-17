@@ -8,10 +8,15 @@
 // midnight console launches — the shape GTA VI and the practice launches
 // share — so they form the reference set (falling back to all comparables
 // if fewer than 5 ramp). For each hour 2..24 the forecast median is the
-// kernel-weighted median of the reference log-ratios, with Gaussian weights
+// kernel-weighted mean of the reference log-ratios, with Gaussian weights
 // on |ln(hour-1) - ln(p1)| (bandwidth 1.0 in log space): launches whose
 // first hour looked like this case's first hour count most, because the
-// ramp factor depends strongly on how big hour 1 already is. The spread is
+// ramp factor depends strongly on how big hour 1 already is. Mean, not
+// median: late-hour log-ratios across the reference launches are strongly
+// right-skewed (a few comparables ramp 5-9x while the bulk ramps 2-3x), so
+// the median systematically under-forecasts the peak — on practice case
+// p00 the hour-18 mean log-ratio is 2.00 vs the actual 2.09, while the
+// median is only 0.93 (forecast ~3x too low). The spread is
 // the weighted MAD of the same log-ratios (x1.4826), floored at 0.35 and
 // capped at 1.5 in log space, so the 5%/95% band stays honest even when
 // only a few neighbours carry weight. Quantiles: q = p1 * exp(m + z*s).
@@ -57,6 +62,16 @@ function dayCurve(dayStart: string, hourly: Row[]): number[] | null {
     out.push(v);
   }
   return out;
+}
+
+function weightedMean(pairs: Array<[number, number]>): number {
+  let sw = 0;
+  let sv = 0;
+  for (const [v, w] of pairs) {
+    sw += w;
+    sv += v * w;
+  }
+  return sw > 0 ? sv / sw : pairs[0][0];
 }
 
 function weightedMedian(pairs: Array<[number, number]>): number {
@@ -117,7 +132,7 @@ function forecastCase(c: any): { hours: Array<{ hour: number; q: number[] }> } {
         const w = Math.exp(-Math.pow((Math.log(h1) - logP1) / KERNEL_BW, 2));
         return [Math.log(curve[h - 1] / h1), w] as [number, number];
       });
-      med = weightedMedian(pairs);
+      med = weightedMean(pairs);
       const devs: Array<[number, number]> = pairs.map(([lr, w]) => [Math.abs(lr - med), w] as [number, number]);
       spread = 1.4826 * weightedMedian(devs);
       spread = Math.max(SPREAD_FLOOR, Math.min(SPREAD_CAP, spread));
